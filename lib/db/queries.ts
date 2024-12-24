@@ -2,8 +2,11 @@ import 'server-only';
 
 import { genSaltSync, hashSync } from 'bcrypt-ts';
 import { and, asc, desc, eq, gt, gte } from 'drizzle-orm';
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
+import { drizzle } from 'drizzle-orm/better-sqlite3';
+import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
+import Database from 'better-sqlite3';
+import { join } from 'path';
+import { randomUUID } from 'crypto';
 
 import {
   user,
@@ -23,7 +26,7 @@ import { BlockKind } from '@/components/block';
 // https://authjs.dev/reference/adapter/drizzle
 
 // biome-ignore lint: Forbidden non-null assertion.
-const client = postgres(process.env.POSTGRES_URL!);
+const client = new Database(join(process.cwd(), 'sqlite.db'));
 const db = drizzle(client);
 
 export async function getUser(email: string): Promise<Array<User>> {
@@ -40,7 +43,11 @@ export async function createUser(email: string, password: string) {
   const hash = hashSync(password, salt);
 
   try {
-    return await db.insert(user).values({ email, password: hash });
+    return await db.insert(user).values({ 
+      id: randomUUID(),
+      email, 
+      password: hash 
+    });
   } catch (error) {
     console.error('Failed to create user in database');
     throw error;
