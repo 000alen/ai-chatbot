@@ -39,6 +39,7 @@
     "@vercel/postgres": "^0.10.0",
     "ai": "4.0.20",
     "bcrypt-ts": "^5.0.2",
+    "better-sqlite3": "^11.7.0",
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
@@ -81,6 +82,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@tailwindcss/typography": "^0.5.15",
+    "@types/better-sqlite3": "^7.6.12",
     "@types/d3-scale": "^4.0.8",
     "@types/node": "^22.8.6",
     "@types/pdf-parse": "^1.1.4",
